@@ -36,7 +36,7 @@ Aplicação de vitrine de produtos com:
 | Banco      | SQLite (`sqlite` + `sqlite3`)       |
 | Runtime    | `tsx watch` (hot reload)            |
 | Frontend   | React 18 · Vite 5 · TypeScript      |
-| Estilo     | CSS-in-JS inline (sem dependências) |
+| Estilo     | CSS externo por componente (sem dependências) |
 
 ---
 
