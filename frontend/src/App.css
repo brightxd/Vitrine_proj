@@ -1,0 +1,85 @@
+/* ── App ─────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f5f5f5;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #fff;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.hero p {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.hero__btn {
+  margin-top: 1.2rem;
+  background: #fff;
+  color: #1565c0;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.2s;
+}
+
+.hero__btn:hover {
+  background: #e3f2fd;
+}
+
+/* Main grid */
+.main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.main__count {
+  font-size: 0.82rem;
+  color: #666;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.main__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.main__empty {
+  color: #999;
+  text-align: center;
+  margin-top: 4rem;
+}
+
+/* Footer */
+.footer {
+  background: #1a1a1a;
+  color: #aaa;
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.78rem;
+}

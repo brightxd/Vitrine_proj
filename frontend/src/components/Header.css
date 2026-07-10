@@ -1,0 +1,182 @@
+/* ── Header ──────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header__bar {
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  gap: 1rem;
+}
+
+.header__logo {
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Nav */
+.header__nav {
+  display: flex;
+  gap: 0.1rem;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+}
+
+.nav__item {
+  position: relative;
+}
+
+.nav__btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0 14px;
+  height: 56px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav__btn:hover,
+.nav__btn--open {
+  color: #fff;
+  border-bottom-color: #42a5f5;
+}
+
+.nav__arrow {
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+
+/* Dropdown simples */
+.nav__dropdown {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-top: 2px solid #42a5f5;
+  min-width: 180px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-radius: 0 0 4px 4px;
+  z-index: 200;
+}
+
+.nav__dropdown-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  color: #333;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav__dropdown-item:hover {
+  background: #f0f7ff;
+  color: #1565c0;
+}
+
+/* Mega-menu Vestuário */
+.nav__megamenu {
+  position: absolute;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-top: 2px solid #42a5f5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 0 0 4px 4px;
+  padding: 1.2rem 1.5rem;
+  z-index: 200;
+  display: flex;
+  gap: 2rem;
+  min-width: 480px;
+}
+
+.megamenu__col {
+  min-width: 130px;
+}
+
+.megamenu__title {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #1565c0;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.megamenu__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 6px 0;
+  font-size: 0.82rem;
+  color: #444;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f5f5;
+  transition: color 0.15s;
+}
+
+.megamenu__item:hover {
+  color: #1565c0;
+}
+
+/* Search */
+.header__search {
+  display: flex;
+  align-items: center;
+  background: #333;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header__search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  width: 160px;
+}
+
+.header__search input::placeholder {
+  color: #888;
+}
+
+.header__search span {
+  padding: 0 10px;
+  color: #aaa;
+  font-size: 0.85rem;
+}
