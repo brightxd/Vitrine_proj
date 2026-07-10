@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ProdutoCard from './components/ProdutoCard.tsx';
 import Header from './components/Header.tsx';
 import Slider from './components/Slider.tsx';
+import Produto from './pages/Produto';
 
 type Produto = {
   id: number;
@@ -89,32 +91,35 @@ export default function App() {
         onSubcatClick={handleSubcatClick}
         subcategorias={subcategorias}
       />
-
-      <div className="hero">
-        <h1>Items</h1>
-        <p>Explore nossa coleção completa de produtos</p>
-        <button className="hero__btn" onClick={handleVerTudo}>VER TUDO</button>
-      </div>
-
-      <Slider subcategorias={subcategorias} onSelect={handleSubcatClick} />
-
-      <main id="itens" className="main">
-        <span className="main__count">
-          {busca && `Busca: "${busca}" · `}{produtos.length} produto{produtos.length !== 1 ? 's' : ''}
-        </span>
-        {produtos.length === 0
-          ? <p className="main__empty">Nenhum produto encontrado.</p>
-          : (
-            <div className="main__grid">
-              {produtos.map(p => <ProdutoCard key={p.id} produto={p} />)}
+      <Routes>
+        <Route path="/produto/:id" element={<Produto />} />
+        <Route path="/" element={
+          <>
+            <div className="hero">
+              <h1>Items</h1>
+              <p>Explore nossa coleção completa de produtos</p>
+              <button className="hero__btn" onClick={handleVerTudo}>VER TUDO</button>
             </div>
-          )
-        }
-      </main>
-
-      <footer className="footer">
-        © 2026 Vitrine de Produtos · Todos os direitos reservados
-      </footer>
+            <Slider subcategorias={subcategorias} onSelect={handleSubcatClick} />
+            <main id="itens" className="main">
+              <span className="main__count">
+                {busca && `Busca: "${busca}" · `}{produtos.length} produto{produtos.length !== 1 ? 's' : ''}
+              </span>
+              {produtos.length === 0
+                ? <p className="main__empty">Nenhum produto encontrado.</p>
+                : (
+                  <div className="main__grid">
+                    {produtos.map(p => <ProdutoCard key={p.id} produto={p} />)}
+                  </div>
+                )
+              }
+            </main>
+            <footer className="footer">
+              © 2026 Vitrine de Produtos · Todos os direitos reservados
+            </footer>
+          </>
+        } />
+      </Routes>
     </div>
   );
 }

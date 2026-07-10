@@ -1,4 +1,5 @@
 import './ProdutoCard.css';
+import { useNavigate } from 'react-router-dom';
 
 type Produto = {
   id: number;
@@ -14,9 +15,10 @@ type Props = { produto: Produto };
 
 export default function ProdutoCard({ produto }: Props) {
   const disponivel = produto.tipo_disponibilidade === 0;
+  const navigate = useNavigate();
 
   return (
-    <div className="card">
+    <div className="card" onClick={() => navigate(`/produto/${produto.id}`)} style={{ cursor: 'pointer' }}>
       <div className="card__image">
         {produto.imagem_url
           ? <img src={produto.imagem_url} alt={produto.nome} />

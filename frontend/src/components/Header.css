@@ -102,53 +102,76 @@
   color: #1565c0;
 }
 
-/* Mega-menu Vestuário */
+/* Mega-menu estilo Columbia */
 .nav__megamenu {
   position: absolute;
   top: 56px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-top: 2px solid #42a5f5;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-radius: 0 0 4px 4px;
-  padding: 1.2rem 1.5rem;
+  border-top: 3px solid #42a5f5;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   z-index: 200;
   display: flex;
-  gap: 2rem;
-  min-width: 480px;
+  min-width: 560px;
 }
 
-.megamenu__col {
-  min-width: 130px;
+.megamenu__list {
+  flex: 0 0 260px;
+  padding: 1.2rem 0;
+  border-right: 1px solid #f0f0f0;
 }
 
-.megamenu__title {
-  margin: 0 0 10px;
-  font-size: 0.75rem;
+.megamenu__group-title {
+  margin: 0.8rem 1.4rem 0.3rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  color: #1565c0;
+  color: #42a5f5;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
 }
 
-.megamenu__item {
-  display: block;
+.megamenu__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  text-align: left;
   background: none;
   border: none;
-  padding: 6px 0;
-  font-size: 0.82rem;
-  color: #444;
+  padding: 10px 1.4rem;
+  font-size: 0.85rem;
+  color: #222;
   cursor: pointer;
-  border-bottom: 1px solid #f5f5f5;
-  transition: color 0.15s;
+  transition: background 0.12s, color 0.12s;
+  text-align: left;
 }
 
-.megamenu__item:hover {
+.megamenu__row:hover {
+  background: #f5f9ff;
   color: #1565c0;
+}
+
+.megamenu__chevron {
+  font-size: 1.1rem;
+  color: #aaa;
+  line-height: 1;
+}
+
+.megamenu__row:hover .megamenu__chevron {
+  color: #1565c0;
+}
+
+.megamenu__image {
+  flex: 1;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+.megamenu__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.2s;
 }
 
 /* Search */
