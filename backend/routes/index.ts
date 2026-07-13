@@ -2,6 +2,8 @@ import { Router, type Request, type Response } from 'express';
 import ControllerProduto from '../controllers/ControllerProduto.ts';
 import ControllerCategoria from '../controllers/ControllerCategoria.ts';
 import Produto from '../Entities/Produto.ts';
+import AuthMiddleware from '../middleware/authmiddleware.ts';
+import ControllerUser from '../controllers/ControllerUser.ts';
 
 const router = Router();
 
@@ -15,7 +17,7 @@ router.get('/produtos', async (_req: Request, resp: Response) => {
     }
 });
 
-router.post('/produtos', async (req: Request, resp: Response) => {
+router.post('/produtos', AuthMiddleware, async (req: Request, resp: Response) => {
     try {
         const { data } = req.body;
         const produto = new Produto(null, data.nome, data.descricao, data.valor, data.quantidade, data.tipo_disponibilidade);
@@ -88,6 +90,32 @@ router.get('/subcategorias/genero/:catId', async (req: Request, resp: Response) 
     } catch (error) {
         console.error(error);
         resp.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+//router.post('/create/product', AuthMiddleware, () => {});
+
+router.post('/auth/register', async (req: Request, res: Response) => {
+    try {
+        const { data } = req.body;
+        const response = await ControllerUser.register(data);
+        res.json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.post('/auth/login', async (req: Request, res: Response) => {
+    try {
+        const { data } = req.body;
+        const response = await ControllerUser.login(data);
+        if (response === false)
+            return res.sendStatus(401);
+        res.json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
