@@ -203,3 +203,42 @@
   color: #aaa;
   font-size: 0.85rem;
 }
+
+/* Actions */
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.header__action-btn {
+  background: #1565c0;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.header__action-btn:hover {
+  background: #0d47a1;
+}
+
+.header__action-btn--ghost {
+  background: transparent;
+  border: 1px solid #555;
+  color: #aaa;
+}
+
+.header__action-btn--ghost:hover {
+  background: #333;
+  color: #fff;
+}

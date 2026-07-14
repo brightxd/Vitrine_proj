@@ -1,29 +1,65 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { MOCK_PRODUTOS } from "../mock";
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import './Produto.css';
 
+type ProdutoDetalhe = {
+  id: number;
+  nome: string;
+  descricao: string;
+  valor: number;
+  quantidade: number;
+  tipo_disponibilidade: number;
+  imagem_url?: string;
+};
 
 export default function Produto() {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const produto = MOCK_PRODUTOS.find(p => p.id === Number(id));
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [produto, setProduto] = useState<ProdutoDetalhe | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState(false);
 
-    if (!produto) return <p>Produto não encontrado</p>
-    return (
-        <div style={{ maxWidth: 900, margin: '2rem auto', padding: '0 1rem', display: 'flex', gap: '2rem' }}>
-            <button onClick={() => navigate(-1)} style={{ position: 'absolute', top: '1rem', left: '1rem' }}>← Voltar</button>
+  useEffect(() => {
+    setLoading(true);
+    setErro(false);
+    fetch(`/api/produtos/${id}`)
+      .then(r => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      })
+      .then(setProduto)
+      .catch(() => setErro(true))
+      .finally(() => setLoading(false));
+  }, [id]);
 
-            <img src={produto.imagem} alt={produto.nome} style={{ width: 420, height: 500, objectFit: 'cover', borderRadius: 8 }} />
+  if (loading) return <div className="detalhe__estado">Carregando...</div>;
+  if (erro || !produto) return <div className="detalhe__estado">Produto não encontrado.</div>;
 
-            <div>
-                <h1>{produto.nome}</h1>
-                <p style={{ color: '#666' }}>{produto.descricao}</p>
-                <p style={{ fontSize: '2rem', color: '#c00', fontWeight: 700 }}>
-                    R$ {produto.valor.toFixed(2).replace('.', ',')}
-                </p>
-                <button style={{ marginTop: '1rem', padding: '14px 32px', background: '#1a1a1a', color: '#fff', border: 'none', borderRadius: 4, fontSize: '1rem', cursor: 'pointer' }}>
-                    ADICIONAR AO CARRINHO
-                </button>
-            </div>
+  const disponivel = produto.tipo_disponibilidade === 0;
+
+  return (
+    <div className="detalhe">
+      <button className="detalhe__voltar" onClick={() => navigate(-1)}>← Voltar</button>
+
+      <div className="detalhe__card">
+        <div className="detalhe__imagem">
+          {produto.imagem_url
+            ? <img src={produto.imagem_url} alt={produto.nome} />
+            : <span className="detalhe__placeholder">📦</span>
+          }
+          <span className={`detalhe__badge ${disponivel ? 'detalhe__badge--disponivel' : 'detalhe__badge--encomenda'}`}>
+            {disponivel ? 'Pronta Entrega' : 'Encomenda'}
+          </span>
         </div>
-    );
+
+        <div className="detalhe__info">
+          <p className="detalhe__estoque">Estoque: {produto.quantidade}</p>
+          <h1 className="detalhe__nome">{produto.nome}</h1>
+          <p className="detalhe__descricao">{produto.descricao}</p>
+          <p className="detalhe__valor">R$ {produto.valor.toFixed(2).replace('.', ',')}</p>
+          <button className="detalhe__btn">ADICIONAR AO CARRINHO</button>
+        </div>
+      </div>
+    </div>
+  );
 }

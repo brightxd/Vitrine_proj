@@ -5,6 +5,9 @@ import ProdutoCard from './components/ProdutoCard.tsx';
 import Header from './components/Header.tsx';
 import Slider from './components/Slider.tsx';
 import Produto from './pages/Produto';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import NovoProduto from './pages/NovoProduto';
 
 type Produto = {
   id: number;
@@ -22,18 +25,22 @@ type Subcategoria = {
   id_categoria: number;
 };
 
-const CAT_NAME_TO_ID: Record<string, number> = {
-  'CASA': 1, 'VESTUÁRIO': 2, 'JARDIM': 3, 'ELETRÔNICOS': 4, 'MOBILE': 5
+type Categoria = {
+  id: number;
+  nome: string;
+  id_categoria: number | null;
 };
 
 export default function App() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [subcategorias, setSubcategorias] = useState<Subcategoria[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [filtro, setFiltro] = useState<number | null>(null);
   const [busca, setBusca] = useState('');
 
   useEffect(() => {
     fetch('/api/subcategorias').then(r => r.json()).then(setSubcategorias);
+    fetch('/api/categorias').then(r => r.json()).then(setCategorias);
   }, []);
 
   const carregarProdutos = useCallback((subcatId: number | null, q: string) => {
@@ -62,10 +69,10 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const id = CAT_NAME_TO_ID[cat];
-    if (id) {
+    const categoria = categorias.find(c => c.nome.toUpperCase() === cat);
+    if (categoria) {
       setBusca('');
-      const first = subcategorias.find(s => s.id_categoria === id);
+      const first = subcategorias.find(s => s.id_categoria === categoria.id);
       if (first) setFiltro(first.id);
       document.getElementById('itens')?.scrollIntoView({ behavior: 'smooth' });
     }
@@ -90,9 +97,13 @@ export default function App() {
         onNavClick={handleNavClick}
         onSubcatClick={handleSubcatClick}
         subcategorias={subcategorias}
+        categorias={categorias}
       />
       <Routes>
         <Route path="/produto/:id" element={<Produto />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Register />} />
+        <Route path="/admin/novo-produto" element={<NovoProduto />} />
         <Route path="/" element={
           <>
             <div className="hero">

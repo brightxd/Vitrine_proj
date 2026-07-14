@@ -1,0 +1,51 @@
+.novoproduto__card {
+  max-width: 540px;
+}
+
+.novoproduto__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+.novoproduto__voltar {
+  background: none;
+  border: none;
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.novoproduto__voltar:hover {
+  text-decoration: underline;
+}
+
+.novoproduto__textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.novoproduto__row {
+  display: flex;
+  gap: 1rem;
+}
+
+.novoproduto__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.novoproduto__sucesso {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  color: #2e7d32;
+  font-weight: 600;
+}
