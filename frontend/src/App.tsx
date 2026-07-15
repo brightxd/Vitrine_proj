@@ -8,6 +8,7 @@ import Produto from './pages/Produto';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NovoProduto from './pages/NovoProduto';
+import Dashboard from './pages/Dashboard';
 
 type Produto = {
   id: number;
@@ -29,6 +30,7 @@ type Categoria = {
   id: number;
   nome: string;
   id_categoria: number | null;
+  img?: string | null;
 };
 
 export default function App() {
@@ -39,8 +41,8 @@ export default function App() {
   const [busca, setBusca] = useState('');
 
   useEffect(() => {
-    fetch('/api/subcategorias').then(r => r.json()).then(setSubcategorias);
-    fetch('/api/categorias').then(r => r.json()).then(setCategorias);
+    fetch('http://localhost:3335/categorias').then(async r => await r.json()).then(setCategorias);
+    fetch('http://localhost:3335/subcategorias').then(async r => await r.json()).then(setSubcategorias);
   }, []);
 
   const carregarProdutos = useCallback((subcatId: number | null, q: string) => {
@@ -104,6 +106,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Register />} />
         <Route path="/admin/novo-produto" element={<NovoProduto />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={
           <>
             <div className="hero">

@@ -40,14 +40,21 @@
   display: flex;
   gap: 1rem;
   flex: 1;
-  overflow: hidden;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.slider__track::-webkit-scrollbar {
+  display: none;
 }
 
 .slider__item {
-  flex: 1;
+  flex: 0 0 180px;
   cursor: pointer;
   text-align: center;
-  min-width: 0;
+  scroll-snap-align: start;
 }
 
 .slider__img-wrap {

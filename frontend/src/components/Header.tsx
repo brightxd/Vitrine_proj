@@ -1,49 +1,68 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Header.css';
 
-type Subcategoria = { id: number; nome: string; id_categoria: number };
-type Categoria = { id: number; nome: string; id_categoria: number | null };
+type Subcategoria = { id: number; nome: string; id_categoria: number; img?: string | null };
+type Categoria = { id: number; nome: string; id_categoria: number | null; img?: string | null };
 
-type Props = {
+type Props = Readonly<{
   onSearch: (q: string) => void;
   onNavClick: (cat: string) => void;
   onSubcatClick: (id: number) => void;
   subcategorias: Subcategoria[];
   categorias: Categoria[];
-};
+}>;
 
-const SUB_IMAGES: Record<string, string> = {
-  'Sala': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',
-  'Cozinha': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80',
-  'Quarto': 'https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=600&q=80',
-  'Calças': 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80',
-  'Camisetas': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80',
-  'Blusas': 'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&q=80',
-  'Vestidos': 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80',
-  'Conjuntos': 'https://images.unsplash.com/photo-1522771930-78848d9293e8?w=600&q=80',
-  'Plantas': 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
-  'Notebooks': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80',
-  'Smartphones': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80',
-};
+type AccordionProps = Readonly<{
+  child: Categoria;
+  subs: Subcategoria[];
+  onSubClick: (id: number) => void;
+  onSubHover: (sub: Subcategoria | null) => void;
+  onClose: () => void;
+}>;
 
-const CAT_FALLBACK: Record<string, string> = {
-  'CASA': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',
-  'VESTUÁRIO': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80',
-  'JARDIM': 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
-  'ELETRÔNICOS': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80',
-  'MOBILE': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80',
-};
+function AccordionGroup({ child, subs, onSubClick, onSubHover, onClose }: AccordionProps) {
+  const [open, setOpen] = useState(false);
 
-const VESTUARIO_GENEROS = ['Masculino', 'Feminino', 'Infantil'];
+  return (
+    <div className="megamenu__group">
+      <button
+        className={`megamenu__row megamenu__row--group ${open ? 'megamenu__row--active' : ''}`}
+        onClick={e => { e.stopPropagation(); if (subs.length > 0) setOpen(prev => !prev); }}      >
+        <span>{child.nome}</span>
+        {subs.length > 0 && (
+          <span className="megamenu__chevron">{open ? '▾' : '›'}</span>
+        )}
+      </button>
+
+      {open && subs.length > 0 && (
+        <ul className="megamenu__accordion">
+          {subs.map(sub => (
+            <li key={sub.id}>
+              <button
+                className="megamenu__accordion-item"
+                onMouseEnter={() => onSubHover(sub)}
+                onMouseLeave={() => onSubHover(null)}
+                onClick={e => { e.stopPropagation(); onSubClick(sub.id); onClose(); }}
+              >
+                {sub.nome}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export default function Header({ onSearch, onNavClick, onSubcatClick, subcategorias, categorias }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [openCat, setOpenCat] = useState<number | null>(null);
   const [searchVal, setSearchVal] = useState('');
   const [hoveredSub, setHoveredSub] = useState<Subcategoria | null>(null);
-  const [subcatsGenero, setSubcatsGenero] = useState<Record<number, Subcategoria[]>>({});
   const [logado, setLogado] = useState(!!localStorage.getItem('token'));
+  const headerRef = useRef<HTMLElement>(null);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -52,27 +71,21 @@ export default function Header({ onSearch, onNavClick, onSubcatClick, subcategor
   };
 
   useEffect(() => {
-    const close = () => setOpenCat(null);
+    const close = (e: MouseEvent) => {
+      if (!headerRef.current?.contains(e.target as Node)) {
+        setOpenCat(null);
+      }
+    };
     document.addEventListener('click', close);
     return () => document.removeEventListener('click', close);
   }, []);
 
   const subsFor = (catId: number) => subcategorias.filter(s => s.id_categoria === catId);
+  const childCatsFor = (catId: number) => categorias.filter(c => c.id_categoria === catId);
 
-  const handleOpenCat = (catId: number | null) => {
-    setOpenCat(catId);
-    if (catId === null) return;
-
-    const cat = categorias.find(c => c.id === catId);
-    const isVestuario = cat?.nome.toUpperCase() === 'VESTUÁRIO';
-    if (!isVestuario || subcatsGenero[catId]) return;
-
-    fetch(`/api/subcategorias/genero/${catId}`)
-      .then(r => r.json())
-      .then((data: Array<{ id: number; nome: string; id_categoria: number }>) => {
-        setSubcatsGenero(prev => ({ ...prev, [catId]: data }));
-      })
-      .catch(() => {});
+  const closeMenu = () => {
+    setOpenCat(null);
+    setHoveredSub(null);
   };
 
   const nav = [
@@ -82,93 +95,68 @@ export default function Header({ onSearch, onNavClick, onSubcatClick, subcategor
       .map(c => ({ label: c.nome.toUpperCase(), catId: c.id })),
   ];
 
-  const vestuarioCat = categorias.find(c => c.nome.toUpperCase() === 'VESTUÁRIO');
-
   return (
-    <header className="header">
-      <div className="header__bar" onClick={e => e.stopPropagation()}>
+    <header ref={headerRef} className="header" onMouseLeave={closeMenu}>
+      <div role="presentation" className="header__bar">
 
-        <button className="header__logo" onClick={() => { navigate('/'); onNavClick('HOME'); setOpenCat(null); }}>
+        <button className="header__logo" onClick={() => { navigate('/'); onNavClick('HOME'); closeMenu(); }}>
           ◆ VITRINE
         </button>
 
         <nav className="header__nav">
           {nav.map(item => {
-            const isVest = item.catId !== null && item.catId === vestuarioCat?.id;
-            const hasSimpleSubs = item.catId !== null && !isVest && subsFor(item.catId).length > 0;
+            const childCats = item.catId !== null ? childCatsFor(item.catId) : [];
+            const directSubs = item.catId !== null ? subsFor(item.catId) : [];
+            const hasChildCats = childCats.length > 0;
+            const hasSubs = hasChildCats || directSubs.length > 0;
             const isOpen = openCat === item.catId;
-            const catLabel = item.label;
+            const currentImg = hoveredSub?.img ?? categorias.find(c => c.id === item.catId)?.img ?? null;
 
             return (
               <div
                 key={item.label}
                 className="nav__item"
-                onMouseEnter={() => item.catId !== null ? handleOpenCat(item.catId) : setOpenCat(null)}
-                onMouseLeave={() => { setOpenCat(null); setHoveredSub(null); }}
+                onMouseEnter={() => { if (item.catId !== null) { setOpenCat(item.catId); } else { setOpenCat(null); } }}
               >
                 <button
                   className={`nav__btn ${isOpen ? 'nav__btn--open' : ''}`}
-                  onClick={() => { if (item.catId === null) navigate('/'); onNavClick(item.label); setOpenCat(null); }}
+                  onClick={() => { if (item.catId === null) { navigate('/'); } onNavClick(item.label); closeMenu(); }}
                 >
                   {item.label}
-                  {(isVest || hasSimpleSubs) && <span className="nav__arrow">▾</span>}
+                  {hasSubs && <span className="nav__arrow">▾</span>}
                 </button>
 
-                {isVest && isOpen && (
+                {hasSubs && isOpen && (
                   <div className="nav__megamenu">
                     <div className="megamenu__list">
-                      {VESTUARIO_GENEROS.map(generoNome => {
-                        const genCat = categorias.find(c => c.nome === generoNome);
-                        const genSubs = genCat
-                          ? (subcatsGenero[item.catId!] ?? subsFor(genCat.id))
-                          : subsFor(item.catId!);
-                        return (
-                          <div key={generoNome}>
-                            <p className="megamenu__group-title">{generoNome}</p>
-                            {genSubs.map(sub => (
-                              <button
-                                key={sub.id}
-                                className="megamenu__row"
-                                onMouseEnter={() => setHoveredSub(sub)}
-                                onClick={() => { onSubcatClick(sub.id); setOpenCat(null); }}
-                              >
-                                <span>{sub.nome}</span>
-                                <span className="megamenu__chevron">›</span>
-                              </button>
-                            ))}
-                          </div>
-                        );
-                      })}
+                      {hasChildCats ? (
+                        childCats.map(child => (
+                          <AccordionGroup
+                            key={child.id}
+                            child={child}
+                            subs={subsFor(child.id)}
+                            onSubClick={onSubcatClick}
+                            onSubHover={setHoveredSub}
+                            onClose={closeMenu}
+                          />
+                        ))
+                      ) : (
+                        directSubs.map(sub => (
+                          <button
+                            key={sub.id}
+                            className="megamenu__row"
+                            onMouseEnter={() => setHoveredSub(sub)}
+                            onClick={() => { onSubcatClick(sub.id); closeMenu(); }}
+                          >
+                            <span>{sub.nome}</span>
+                            <span className="megamenu__chevron">›</span>
+                          </button>
+                        ))
+                      )}
                     </div>
-                    <div className="megamenu__image">
-                      <img
-                        src={hoveredSub ? (SUB_IMAGES[hoveredSub.nome] ?? CAT_FALLBACK['VESTUÁRIO']) : CAT_FALLBACK['VESTUÁRIO']}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                )}
 
-                {hasSimpleSubs && isOpen && (
-                  <div className="nav__megamenu">
-                    <div className="megamenu__list">
-                      {subsFor(item.catId!).map(sub => (
-                        <button
-                          key={sub.id}
-                          className="megamenu__row"
-                          onMouseEnter={() => setHoveredSub(sub)}
-                          onClick={() => { onSubcatClick(sub.id); setOpenCat(null); }}
-                        >
-                          <span>{sub.nome}</span>
-                          <span className="megamenu__chevron">›</span>
-                        </button>
-                      ))}
-                    </div>
                     <div className="megamenu__image">
-                      <img
-                        src={hoveredSub ? (SUB_IMAGES[hoveredSub.nome] ?? CAT_FALLBACK[catLabel]) : CAT_FALLBACK[catLabel]}
-                        alt=""
-                      />
+                      {currentImg && <img src={currentImg} alt="" />}
                     </div>
                   </div>
                 )}
@@ -187,16 +175,11 @@ export default function Header({ onSearch, onNavClick, onSubcatClick, subcategor
           <span>🔍</span>
         </div>
 
-        <div className="header__actions">
-          {logado ? (
-            <>
-              <Link to="/admin/novo-produto" className="header__action-btn">+ Produto</Link>
-              <button className="header__action-btn header__action-btn--ghost" onClick={handleLogout}>Sair</button>
-            </>
-          ) : (
-            <Link to="/login" className="header__action-btn">Entrar</Link>
-          )}
-        </div>
+        {logado && location.pathname === '/dashboard' && (
+          <div className="header__actions">
+            <button className="header__action-btn header__action-btn--ghost" onClick={handleLogout}>Sair</button>
+          </div>
+        )}
       </div>
     </header>
   );

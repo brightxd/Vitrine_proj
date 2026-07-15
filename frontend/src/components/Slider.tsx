@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import './Slider.css';
 
 type Subcategoria = {
   id: number;
   nome: string;
   id_categoria: number;
+  img?: string | null;
 };
 
 type Props = {
@@ -37,30 +38,30 @@ const SLIDER_IMAGES: Record<string, string> = {
   'Acessórios':        'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&q=80',
 };
 
-const VISIBLE = 5;
+const CARD_WIDTH = 180; // px, deve bater com o min-width do CSS
 
 export default function Slider({ subcategorias, onSelect }: Props) {
-  const [offset, setOffset] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   if (subcategorias.length === 0) return null;
 
-  const prev = () => setOffset(o => Math.max(0, o - 1));
-  const next = () => setOffset(o => Math.min(subcategorias.length - VISIBLE, o + 1));
-  const visible = subcategorias.slice(offset, offset + VISIBLE);
+  const scroll = (dir: -1 | 1) => {
+    trackRef.current?.scrollBy({ left: dir * CARD_WIDTH * 2, behavior: 'smooth' });
+  };
 
   return (
     <div className="slider">
       <h2 className="slider__title">Compre por Categorias</h2>
 
       <div className="slider__row">
-        <button className="slider__arrow" onClick={prev} disabled={offset === 0}>‹</button>
+        <button className="slider__arrow" onClick={() => scroll(-1)}>‹</button>
 
-        <div className="slider__track">
-          {visible.map(sub => (
+        <div ref={trackRef} className="slider__track">
+          {subcategorias.map(sub => (
             <div key={sub.id} className="slider__item" onClick={() => onSelect(sub.id)}>
               <div className="slider__img-wrap">
                 <img
-                  src={SLIDER_IMAGES[sub.nome] ?? 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80'}
+                  src={sub.img ?? SLIDER_IMAGES[sub.nome] ?? 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80'}
                   alt={sub.nome}
                 />
               </div>
@@ -69,7 +70,7 @@ export default function Slider({ subcategorias, onSelect }: Props) {
           ))}
         </div>
 
-        <button className="slider__arrow" onClick={next} disabled={offset >= subcategorias.length - VISIBLE}>›</button>
+        <button className="slider__arrow" onClick={() => scroll(1)}>›</button>
       </div>
     </div>
   );

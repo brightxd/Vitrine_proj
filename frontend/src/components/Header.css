@@ -160,6 +160,51 @@
   color: #1565c0;
 }
 
+/* Grupo com accordion */
+.megamenu__group {
+  position: relative;
+}
+
+.megamenu__row--group {
+  font-weight: 700;
+}
+
+.megamenu__row--active {
+  background: #f5f9ff;
+  color: #1565c0;
+}
+
+.megamenu__row--active .megamenu__chevron {
+  color: #1565c0;
+}
+
+.megamenu__accordion {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.megamenu__accordion-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 8px 1.8rem;
+  font-size: 0.82rem;
+  color: #444;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.megamenu__accordion-item:hover {
+  background: #e8f0fe;
+  color: #1565c0;
+}
+
 .megamenu__image {
   flex: 1;
   overflow: hidden;

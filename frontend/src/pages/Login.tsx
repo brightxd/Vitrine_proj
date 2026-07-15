@@ -1,32 +1,40 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Auth.css';
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
   const [erro, setErro] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token: string | null = localStorage.getItem('token');
+    if (token){
+      navigate('/dashboard');
+    }
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setErro('');
     setLoading(true);
     try {
-      const r = await fetch('/api/auth/login', {
+      const r = await fetch('http://localhost:3335/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: { email, senha } }),
+        body: JSON.stringify({ data: { email, password } }),
       });
+      console.log(r);
       if (r.status === 401) {
-        setErro('E-mail ou senha incorretos.');
+        setErro('E-mail ou password incorretos.');
         return;
       }
       if (!r.ok) throw new Error();
       const { token } = await r.json();
       localStorage.setItem('token', token);
-      navigate('/');
+      navigate('/dashboard');
     } catch {
       setErro('Erro ao conectar. Tente novamente.');
     } finally {
@@ -53,8 +61,8 @@ export default function Login() {
             className="auth__input"
             type="password"
             placeholder="••••••••"
-            value={senha}
-            onChange={e => setSenha(e.target.value)}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             required
           />
           {erro && <p className="auth__erro">{erro}</p>}

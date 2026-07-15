@@ -1,0 +1,408 @@
+.dash {
+  min-height: calc(100vh - 56px);
+  background: #f5f5f5;
+  padding: 2.5rem 2rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.dash__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.dash__title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.dash__voltar {
+  background: none;
+  border: none;
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: 0.5px;
+}
+
+.dash__voltar:hover {
+  text-decoration: underline;
+}
+
+.dash__loading {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.dash__section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin: 0 0 1.2rem;
+}
+
+/* abas */
+.dash__tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e8e8e8;
+  margin-bottom: 1.8rem;
+}
+
+.dash__tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #888;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.dash__tab:hover {
+  color: #1a1a1a;
+}
+
+.dash__tab--active {
+  color: #1565c0;
+  border-bottom-color: #1565c0;
+}
+
+.dash__tab-count {
+  background: #e8e8e8;
+  color: #444;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 1px 7px;
+  min-width: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+.dash__tab--active .dash__tab-count {
+  background: #e3f0ff;
+  color: #1565c0;
+}
+
+/* lista simples (aba categorias) */
+.dash__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dash__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 0.7rem 1rem;
+}
+
+.dash__row-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* tabela (aba produtos) */
+.dash__table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 0.88rem;
+}
+
+.dash__table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  border-bottom: 1px solid #e8e8e8;
+  background: #fafafa;
+}
+
+.dash__table td {
+  padding: 0.7rem 1rem;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dash__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dash__table tbody tr:hover td {
+  background: #fafafa;
+}
+
+.dash__table-empty {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  padding: 2rem !important;
+}
+
+.dash__table-action {
+  width: 40px;
+  text-align: center;
+}
+
+/* form de produto no modal */
+.dash__modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dash__modal-textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: inherit;
+}
+
+.dash__modal-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.dash__modal-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dash__grid {
+  display: flex;
+  flex-direction: row;
+}
+
+.dash__card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 1.2rem 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin: 10px;
+}
+
+.dash__card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dash__sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dash__subitem {
+  font-size: 0.85rem;
+  color: #444;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dash__subitem--empty {
+  color: #aaa;
+  font-style: italic;
+  background: none;
+}
+
+/* card header com botão de edição */
+.dash__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.dash__card-header .dash__card-title {
+  margin: 0;
+}
+
+.dash__edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 1rem;
+  padding: 2px 4px;
+  border-radius: 3px;
+  line-height: 1;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.dash__edit-btn:hover {
+  color: #1565c0;
+  background: #e3f0ff;
+}
+
+.dash__edit-btn--sm {
+  font-size: 0.85rem;
+}
+
+.dash__add-sub-btn {
+  margin-top: 0.75rem;
+  width: 100%;
+  background: none;
+  border: 1px dashed #bbb;
+  border-radius: 3px;
+  padding: 5px 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.dash__add-sub-btn:hover {
+  border-color: #1565c0;
+  color: #1565c0;
+}
+
+/* modal */
+.dash__modal {
+  border: none;
+  border-radius: 6px;
+  padding: 2rem 1.8rem;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.dash__modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.dash__modal-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 1.4rem;
+  letter-spacing: 0.3px;
+}
+
+.dash__modal-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+
+.dash__modal-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: #222;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.dash__modal-input:focus {
+  border-color: #42a5f5;
+}
+
+.dash__modal-erro {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  color: #c62828;
+}
+
+.dash__modal-sucesso {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  color: #1b5e20;
+  font-weight: 600;
+}
+
+.dash__modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.4rem;
+}
+
+.dash__modal-btn {
+  background: #1565c0;
+  color: #fff;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.dash__modal-btn:hover:not(:disabled) {
+  background: #0d47a1;
+}
+
+.dash__modal-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.dash__modal-btn--ghost {
+  background: none;
+  color: #555;
+  border: 1px solid #ddd;
+}
+
+.dash__modal-btn--ghost:hover:not(:disabled) {
+  background: #f5f5f5;
+  color: #222;
+}
