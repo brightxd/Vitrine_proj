@@ -293,15 +293,15 @@ export default function Dashboard() {
 
           {aba === 'categorias' && (
             <div className="dash__list">
+              <button className="dash__add-sub-btn" onClick={() => abrirModal({ tipo: 'nova-categoria' })}>
+                + categoria
+              </button>
               {raizes.map(cat => (
                 <div key={cat.id} className="dash__row">
                   <span className="dash__row-name">{cat.nome}</span>
                   <button className="dash__edit-btn" onClick={() => abrirModal({ tipo: 'categoria', item: cat })}>✎</button>
                 </div>
               ))}
-              <button className="dash__add-sub-btn" onClick={() => abrirModal({ tipo: 'nova-categoria' })}>
-                + categoria
-              </button>
             </div>
           )}
 
@@ -312,6 +312,9 @@ export default function Dashboard() {
                   <div className="dash__card-header">
                     <p className="dash__card-title">{cat.nome}</p>
                   </div>
+                  <button className="dash__add-sub-btn" onClick={() => abrirModal({ tipo: 'nova-subcategoria', catId: cat.id })}>
+                    + subcategoria
+                  </button>
                   <ul className="dash__sublist">
                     {subsFor(cat.id).length === 0
                       ? <li className="dash__subitem dash__subitem--empty">Nenhuma subcategoria</li>
@@ -323,9 +326,6 @@ export default function Dashboard() {
                         ))
                     }
                   </ul>
-                  <button className="dash__add-sub-btn" onClick={() => abrirModal({ tipo: 'nova-subcategoria', catId: cat.id })}>
-                    + subcategoria
-                  </button>
                 </div>
               ))}
             </div>

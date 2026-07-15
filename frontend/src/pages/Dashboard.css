@@ -319,6 +319,8 @@
 .dash__grid {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .dash__card {
@@ -328,6 +330,7 @@
   padding: 1.2rem 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   margin: 10px;
+  min-width: 160px;
 }
 
 .dash__card-title {
@@ -400,7 +403,8 @@
 }
 
 .dash__add-sub-btn {
-  margin-top: 0.75rem;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
   width: 100%;
   background: none;
   border: 1px dashed #bbb;
