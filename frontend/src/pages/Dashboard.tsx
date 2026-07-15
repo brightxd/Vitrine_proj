@@ -196,7 +196,7 @@ export default function Dashboard() {
   const raizes = categorias.filter(c => c.id_categoria === null);
   const subsFor = (catId: number) => subcategorias.filter(s => s.id_categoria === catId);
 
-  const semEstoque = produtos.filter(p => p.quantidade === 0).length;
+  const totalEstoque = produtos.reduce((acc, p) => acc + Number(p.quantidade), 0);
   const prontos = produtos.filter(p => p.tipo_disponibilidade === 0).length;
   const encomenda = produtos.filter(p => p.tipo_disponibilidade === 1).length;
 
@@ -237,9 +237,9 @@ export default function Dashboard() {
               <span className="dash__tile-value">{subcategorias.length}</span>
               <span className="dash__tile-label">Subcategorias</span>
             </div>
-            <div className="dash__tile dash__tile--warn">
-              <span className="dash__tile-value">{semEstoque}</span>
-              <span className="dash__tile-label">Sem estoque</span>
+            <div className="dash__tile">
+              <span className="dash__tile-value">{totalEstoque}</span>
+              <span className="dash__tile-label">Em Estoque</span>
             </div>
             <div className="dash__tile">
               <span className="dash__tile-value">{prontos}</span>
