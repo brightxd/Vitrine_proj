@@ -73,7 +73,7 @@ App.tsx
   └── ProdutoCard.tsx   ← card com imagem, preço, badge disponibilidade
 ```
 
-**Proxy Vite:** todas as chamadas `/api/*` são redirecionadas para `http://localhost:3335`, evitando CORS.
+**Proxy Vite:** todas as chamadas `/api/*` são redirecionadas para `/api`, evitando CORS.
 
 ---
 
@@ -186,7 +186,7 @@ Mobile        → Smartphones · Tablets · Acessórios
 cd backend
 npm install
 npm run dev
-# Servidor em http://localhost:3335
+# Servidor em /api
 ```
 
 ### Frontend

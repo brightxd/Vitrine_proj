@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NovoProduto from './pages/NovoProduto';
 import Dashboard from './pages/Dashboard';
+import UseFetch from './UseFetch.ts';
 
 type Produto = {
   id: number;
@@ -41,8 +42,8 @@ export default function App() {
   const [busca, setBusca] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3335/categorias').then(async r => await r.json()).then(setCategorias);
-    fetch('http://localhost:3335/subcategorias').then(async r => await r.json()).then(setSubcategorias);
+    fetch('/api/categorias').then(async r => await r.json()).then(setCategorias);
+    fetch('/api/subcategorias').then(async r => await r.json()).then(setSubcategorias);
   }, []);
 
   const carregarProdutos = useCallback((subcatId: number | null, q: string) => {

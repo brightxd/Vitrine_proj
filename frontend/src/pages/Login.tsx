@@ -21,7 +21,7 @@ export default function Login() {
     setErro('');
     setLoading(true);
     try {
-      const r = await fetch('http://localhost:3335/auth/login', {
+      const r = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: { email, password } }),
