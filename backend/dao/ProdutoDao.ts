@@ -4,7 +4,11 @@ import Produto from '../Entities/Produto.ts';
 class ProdutoDao extends Connection {
     async all() {
         const db = await this.db;
-        return db?.all('SELECT * FROM produto');
+        return db?.all(
+            `SELECT p.*, cp.id_categoria AS id_subcategoria
+             FROM produto p
+             LEFT JOIN categoria_produto cp ON cp.id_produto = p.id`
+        );
     }
 
     async find(id: number) {
@@ -15,8 +19,25 @@ class ProdutoDao extends Connection {
     async create(produto: Produto) {
         const db = await this.db;
         return db?.run(
-            'INSERT INTO produto (nome, descricao, valor, quantidade, tipo_disponibilidade) VALUES (?, ?, ?, ?, ?)',
-            [produto.nome, produto.descricao, produto.valor, produto.quantidade, produto.tipo_disponibilidade]
+            'INSERT INTO produto (nome, descricao, valor, quantidade, tipo_disponibilidade, imagem_url) VALUES (?, ?, ?, ?, ?, ?)',
+            [produto.nome, produto.descricao, produto.valor, produto.quantidade, produto.tipo_disponibilidade, produto.imagem_url ?? null]
+        );
+    }
+
+    async update(produto: Produto) {
+        const db = await this.db;
+        return db?.run(
+            'UPDATE produto SET nome = ?, descricao = ?, valor = ?, quantidade = ?, tipo_disponibilidade = ?, imagem_url = ? WHERE id = ?',
+            [produto.nome, produto.descricao, produto.valor, produto.quantidade, produto.tipo_disponibilidade, produto.imagem_url ?? null, produto.id]
+        );
+    }
+
+    async updateSubcategoria(id_produto: number, id_subcategoria: number) {
+        const db = await this.db;
+        await db?.run('DELETE FROM categoria_produto WHERE id_produto = ?', [id_produto]);
+        return db?.run(
+            'INSERT INTO categoria_produto (id_produto, id_categoria) VALUES (?, ?)',
+            [id_produto, id_subcategoria]
         );
     }
 
@@ -36,6 +57,14 @@ class ProdutoDao extends Connection {
         return db?.all(
             `SELECT * FROM produto WHERE nome LIKE ? OR descricao LIKE ?`,
             [like, like]
+        );
+    }
+
+    async linkSubcategoria(id_produto: number, id_subcategoria: number) {
+        const db = await this.db;
+        return db?.run(
+            'INSERT INTO categoria_produto (id_produto, id_categoria) VALUES (?, ?)',
+            [id_produto, id_subcategoria]
         );
     }
 }

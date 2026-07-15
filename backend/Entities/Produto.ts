@@ -5,6 +5,7 @@ class Produto {
     valor: number;
     quantidade: number;
     tipo_disponibilidade: number;
+    imagem_url: string | null;
 
     constructor(
         id: number | null,
@@ -12,7 +13,8 @@ class Produto {
         descricao: string,
         valor: number,
         quantidade: number,
-        tipo_disponibilidade: number
+        tipo_disponibilidade: number,
+        imagem_url: string | null = null
     ) {
         this.validateNome(nome);
         this.validateValor(valor);
@@ -25,6 +27,7 @@ class Produto {
         this.valor = valor;
         this.quantidade = quantidade;
         this.tipo_disponibilidade = tipo_disponibilidade;
+        this.imagem_url = imagem_url;
     }
 
     validateNome(nome: string) {

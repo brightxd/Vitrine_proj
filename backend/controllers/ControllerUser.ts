@@ -24,7 +24,7 @@ class ControllerUser {
             {
                 expiresIn: '1h'
             });
-            return token;
+            return { token };
         } else return isPasswordVerified;
     }
 

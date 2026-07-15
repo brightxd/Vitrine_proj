@@ -93,7 +93,71 @@ router.get('/subcategorias/genero/:catId', async (req: Request, resp: Response) 
     }
 });
 
-//router.post('/create/product', AuthMiddleware, () => {});
+router.post('/create/produto', AuthMiddleware, async (req: Request, res: Response) => {
+    try{
+        const { data } = req.body;
+        const response = await ControllerProduto.createWithSubcategoria(data);
+        res.status(201).json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: error instanceof Error ? error.message : 'Erro ao criar produto' });
+    }
+});
+
+router.post('/update/produto', AuthMiddleware, async (req: Request, res: Response) => {
+    try{
+        const { data } = req.body;
+        const response = await ControllerProduto.update(data);
+        res.json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.post('/update/categoria', AuthMiddleware, async (req: Request, res: Response) => {
+    try{
+        const { data } = req.body;
+        const response = await ControllerCategoria.update(data);
+        res.json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.post('/update/subcategoria', AuthMiddleware, async (req: Request, res: Response) => {
+    try{
+        const { data } = req.body;
+        const response = await ControllerCategoria.updateSubcategoria(data);
+        res.json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.post('/create/subcategoria', AuthMiddleware, async (req: Request, res: Response) => {
+    try{
+        const { data } = req.body;
+        const response = await ControllerCategoria.createSubcategoria(data);
+        res.status(201).json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.post('/create/categoria', AuthMiddleware, async (req: Request, res: Response) => {
+    try{
+        const { data } = req.body;
+        const response = await ControllerCategoria.createCategoria(data.nome, data.img);
+        res.status(201).json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: error instanceof Error ? error.message : 'Erro ao criar categoria' });
+    }
+});
 
 router.post('/auth/register', async (req: Request, res: Response) => {
     try {
@@ -109,6 +173,7 @@ router.post('/auth/register', async (req: Request, res: Response) => {
 router.post('/auth/login', async (req: Request, res: Response) => {
     try {
         const { data } = req.body;
+        console.log({data});
         const response = await ControllerUser.login(data);
         if (response === false)
             return res.sendStatus(401);

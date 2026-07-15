@@ -1,10 +1,10 @@
-class Categoria {
+class Subcategoria {
     id: number | null;
     nome: string;
-    id_categoria: number | null;
+    id_categoria: number;
     img: string | null;
 
-    constructor(id: number | null, nome: string, id_categoria: number | null, img: string | null) {
+    constructor(id: number | null, nome: string, id_categoria: number, img: string | null = null) {
         this.validateNome(nome);
         this.id = id;
         this.nome = nome.trim();
@@ -17,4 +17,4 @@ class Categoria {
     }
 }
 
-export default Categoria;
+export default Subcategoria;
