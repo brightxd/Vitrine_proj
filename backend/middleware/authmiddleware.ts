@@ -14,7 +14,7 @@ export default function AuthMiddleware(req: Request, res: Response, next: NextFu
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY!);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!);
         next();
     } catch (err) {
         return res.status(401).json({message: "Unauthorized"});
