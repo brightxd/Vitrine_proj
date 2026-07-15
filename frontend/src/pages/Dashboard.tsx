@@ -196,6 +196,21 @@ export default function Dashboard() {
   const raizes = categorias.filter(c => c.id_categoria === null);
   const subsFor = (catId: number) => subcategorias.filter(s => s.id_categoria === catId);
 
+  const semEstoque = produtos.filter(p => p.quantidade === 0).length;
+  const prontos = produtos.filter(p => p.tipo_disponibilidade === 0).length;
+  const encomenda = produtos.filter(p => p.tipo_disponibilidade === 1).length;
+
+  const produtosPorSub = subcategorias
+    .map(sub => ({
+      nome: sub.nome,
+      total: produtos.filter(p => p.id_subcategoria === sub.id).length,
+    }))
+    .filter(s => s.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 8);
+
+  const maxBar = Math.max(...produtosPorSub.map(s => s.total), 1);
+
   const ABAS: { key: Aba; label: string; count: number }[] = [
     { key: 'categorias',    label: 'Categorias',    count: raizes.length },
     { key: 'subcategorias', label: 'Subcategorias', count: subcategorias.length },
@@ -210,6 +225,53 @@ export default function Dashboard() {
         <h1 className="dash__title">Dashboard</h1>
         <button className="dash__voltar" onClick={() => navigate('/')}>← Voltar à vitrine</button>
       </div>
+
+      {!loading && (
+        <div className="dash__overview">
+          <div className="dash__tiles">
+            <div className="dash__tile">
+              <span className="dash__tile-value">{produtos.length}</span>
+              <span className="dash__tile-label">Produtos</span>
+            </div>
+            <div className="dash__tile">
+              <span className="dash__tile-value">{subcategorias.length}</span>
+              <span className="dash__tile-label">Subcategorias</span>
+            </div>
+            <div className="dash__tile dash__tile--warn">
+              <span className="dash__tile-value">{semEstoque}</span>
+              <span className="dash__tile-label">Sem estoque</span>
+            </div>
+            <div className="dash__tile">
+              <span className="dash__tile-value">{prontos}</span>
+              <span className="dash__tile-label">Pronta Entrega</span>
+            </div>
+            <div className="dash__tile">
+              <span className="dash__tile-value">{encomenda}</span>
+              <span className="dash__tile-label">Encomenda</span>
+            </div>
+          </div>
+
+          {produtosPorSub.length > 0 && (
+            <div className="dash__chart">
+              <p className="dash__chart-title">Produtos por subcategoria</p>
+              <div className="dash__bars">
+                {produtosPorSub.map(s => (
+                  <div key={s.nome} className="dash__bar-row">
+                    <span className="dash__bar-label" title={s.nome}>{s.nome}</span>
+                    <div className="dash__bar-track">
+                      <div
+                        className="dash__bar-fill"
+                        style={{ width: `${(s.total / maxBar) * 100}%` }}
+                      />
+                    </div>
+                    <span className="dash__bar-count">{s.total}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="dash__tabs">
         {ABAS.map(a => (

@@ -64,6 +64,10 @@ export default function Header({ onSearch, onNavClick, onSubcatClick, subcategor
   const [logado, setLogado] = useState(!!localStorage.getItem('token'));
   const headerRef = useRef<HTMLElement>(null);
 
+  useEffect(() => {
+    setLogado(!!localStorage.getItem('token'));
+  }, [location.pathname]);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setLogado(false);
@@ -175,11 +179,13 @@ export default function Header({ onSearch, onNavClick, onSubcatClick, subcategor
           <span>🔍</span>
         </div>
 
-        {logado && location.pathname === '/dashboard' && (
-          <div className="header__actions">
+        <div className="header__actions">
+          {logado ? (
             <button className="header__action-btn header__action-btn--ghost" onClick={handleLogout}>Sair</button>
-          </div>
-        )}
+          ) : (
+            <button className="header__action-btn" onClick={() => navigate('/login')}>Login</button>
+          )}
+        </div>
       </div>
     </header>
   );

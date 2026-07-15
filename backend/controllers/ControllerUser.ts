@@ -20,7 +20,7 @@ class ControllerUser {
                 user: user,
                 iat: Date.now()
             },
-            process.env.SECRET_KEY!,
+            process.env.JWT_SECRET!,
             {
                 expiresIn: '1h'
             });
